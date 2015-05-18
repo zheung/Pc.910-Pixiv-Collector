@@ -1,0 +1,12 @@
+#No Eclipse Setting
+.project
+.settings
+
+#No Node Moudles
+node_modules
+
+#No Personal Config
+config.json
+
+#No Test File
+*test*

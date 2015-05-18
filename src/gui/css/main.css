@@ -1,0 +1,57 @@
+body
+{
+	font-family: Arial, 'Microsoft YaHei' !important;
+	background-color: #293134;
+	color: white;
+}
+div
+{
+	display: table;
+	padding: 7px;
+}
+
+span
+{
+	padding: 3px;
+	border-radius: 2px;
+}
+.button
+{
+	padding: 3px;
+	border-radius: 2px;
+	background-color: #EC7600;
+	color: white;
+	cursor: pointer;
+}
+
+#bar-login
+{
+	border: 2px solid #FFCD22;
+}
+
+#input-id, #input-password
+{
+	display: block;
+	padding: 3px;
+	height: 20px;
+	margin-top: 7px;
+	border-radius: 2px;
+	border-style: none;
+}
+#label-remember
+{
+	display: block;
+	cursor: pointer;
+	margin-top: 7px;
+}
+#input-remember
+{
+	vertical-align: middle;
+	cursor: pointer;
+}
+#action-login
+{
+	display: inline-block;
+	margin-top: 7px;
+	float: right;
+}

@@ -1,0 +1,5 @@
+{
+	"name": "Pixiv-Collector",
+	"version": "0.7.0",
+	"main": "./src/core/main.js"
+}
