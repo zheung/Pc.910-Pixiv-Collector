@@ -22,7 +22,7 @@ exports.init = function(app, callback)
 	
 	win.webContents.once('did-finish-load', function()
 	{
-		win.webContents.executeJavaScript(execute('init'));
+		win.execute('tool');
 		
 		win.show();
 		
@@ -30,7 +30,7 @@ exports.init = function(app, callback)
 		{
 			try
 			{
-				var exeScript = fs.readFileSync('./src/gui/js/'+script+'.js').toString();
+				var exeScript = fs.readFileSync('./gui/js/'+script+'.js').toString();
 				
 				for(var key in dictS)
 					exeScript = exeScript.replace(eval('/\'~'+key+'~\'/'), '\''+dictS[key]+'\'');
@@ -46,10 +46,10 @@ exports.init = function(app, callback)
 			}
 		}
 		
-		callback();
+		if(callback) callback();
 	});
 	
-	win.loadWinUrl('file://'+ __dirname.replace('\core', '\gui') +'/main.html');
+	win.loadWinUrl('file://'+ __dirname.replace('\src', '\gui') +'/main.html');
 	
 	return exports;
 };

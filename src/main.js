@@ -1,6 +1,6 @@
 require('./init').globalInit();
 require('./init').appInit();
-require('./core');
+require('./init').coreInit();
 require('./action');
 
 app.once('ready', function()

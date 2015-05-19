@@ -30,7 +30,7 @@ exports.globalInit = function()
 	{
 		try
 		{
-			var content = fs.readFileSync('./src/core/execute/'+script+'.js').toString();
+			var content = fs.readFileSync('./src/execute/'+script+'.js').toString();
 			
 			for(var key in dictS)
 				content = content.replace(eval('/\'~'+key+'~\'/'), '\''+dictS[key]+'\'');
@@ -44,6 +44,24 @@ exports.globalInit = function()
 		{
 			return null;
 		}
+	};
+
+	newWin = function(option)
+	{
+		if(typeof option != 'object')
+			option =
+			{
+				'width': 1280,
+				'height': 720,
+				'show': true,
+				'node-integration': false,
+			};
+			
+		var win = new BrowserWindow(option);
+		win.webContents.setUserAgent('Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36');
+		win.openDevTools();
+		
+		return win;
 	};
 //Init prototype function
 	BrowserWindow.prototype.loadWinUrl = function()
@@ -62,17 +80,23 @@ exports.globalInit = function()
 		else
 			this.webContents.executeJavaScript(script);
 	};
-//Init variable
-	winOption =
+	String.prototype.surWith = function(startStr, endStr)
 	{
-		'width': 1280,
-		'height': 720,
-		'show': true,
-		'node-integration': false,
-	}
+		if(typeof(startStr) != "string" && typeof(endStr) != "string") return false;
+		
+		var result = true;
+		
+		if(typeof(startStr) == "string")
+			if(this.indexOf(startStr) != 0)
+				result = false;
 
-	userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36';
-}
+		if(typeof(endStr) == "string")
+			if(this.lastIndexOf(endStr) != (this.length-endStr.length))
+				result = false;
+
+		return result;
+	};
+};
 
 exports.appInit = function()
 {
@@ -84,4 +108,13 @@ exports.appInit = function()
 
 	app.config = require('./config');
 	app.receiver = require('./receiver')(app);
-}
+};
+
+exports.coreInit = function()
+{
+	fs.readdirSync("./src/core").forEach(function(fileName)
+	{
+		if(fileName.surWith(null, ".js") && fs.statSync("./src/core/"+fileName).isFile())
+			require('./core/'+fileName.replace('.js', ''));
+	});
+};

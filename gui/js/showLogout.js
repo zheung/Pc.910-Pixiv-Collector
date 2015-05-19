@@ -13,9 +13,9 @@
 		});
 	};
 	
-	$qs('#bar-loginInfo').appendChild(a);
+	$tqs('#bar-loginInfo').appendChild(a);
 	
-	var barLogin = $qs('#bar-login');
+	var barLogin = $tqs('#bar-login');
 	
 	if(barLogin)
 		barLogin.parentNode.removeChild(barLogin);
