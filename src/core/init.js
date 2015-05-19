@@ -2,6 +2,7 @@ exports.globalInit = function()
 {
 //Init official module
 	http = require('http');
+	https = require('https');
 	fs = require('fs');
 	EventEmitter = require('events').EventEmitter;
 //Init electron module
@@ -13,7 +14,7 @@ exports.globalInit = function()
 		var req = http.request(
 		{
 	        hostname: '127.0.0.1',
-	        port: 911,
+	        port: 912,
 	        path: '/output',
 	        method: 'POST'
 	    });
@@ -79,7 +80,8 @@ exports.appInit = function()
 	
 	app.commandLine.appendSwitch('ignore-gpu-blacklist');
 	app.commandLine.appendSwitch('disable-direct-write');
-	
-	app.config = require('../../config');
+	app.commandLine.appendSwitch('allow-running-insecure-content');
+
+	app.config = require('./config');
 	app.receiver = require('./receiver')(app);
 }

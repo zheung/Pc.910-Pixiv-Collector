@@ -1,7 +1,7 @@
 //log = console.log;
 module.exports = function(app)
 {
-	var receiver = http.createServer(function(req, res)
+	var server = function(req, res)
 	{
 		if(req.url=='/file')//receive image
 		{
@@ -11,12 +11,14 @@ module.exports = function(app)
 			
 			req.on('end', function()
 			{
-				data = JSON.parse(Buffer.concat(data).toString());
+				if(data.length)
+					data = JSON.parse(Buffer.concat(data).toString());
 				
 				res.writeHead(200,
 				{
 					'Access-Control-Request-Method': 'GET, POST',
-					'Access-Control-Allow-Origin':'*'
+					'Access-Control-Allow-Origin':'*',
+					'Cache-Control': 'no-cache'
 				});
 				res.end();
 				
@@ -31,12 +33,14 @@ module.exports = function(app)
 			
 			req.on('end', function()
 			{
-				data = JSON.parse(Buffer.concat(data).toString());
+				if(data.length)
+					data = JSON.parse(Buffer.concat(data).toString());
 				
 				res.writeHead(200,
 				{
 					'Access-Control-Request-Method': 'GET, POST',
-					'Access-Control-Allow-Origin':'*'
+					'Access-Control-Allow-Origin':'*',
+					'Cache-Control': 'no-cache'
 				});
 				res.end();
 				
@@ -52,18 +56,33 @@ module.exports = function(app)
 			
 			req.on('end', function()
 			{
-				data = JSON.parse(Buffer.concat(data).toString());
+				if(data.length)
+					data = JSON.parse(Buffer.concat(data).toString());
 				
 				res.writeHead(200,
 				{
 					'Access-Control-Request-Method': 'GET, POST',
-					'Access-Control-Allow-Origin':'*'
+					'Access-Control-Allow-Origin':'*',
+					'Cache-Control': 'no-cache'
 				});
 				res.end();
 				
 				app.emit('action-'+data.action, data);
 				log('[receiver] action: '+data.action);
 			});
+		}
+		else if(req.url=='/get')//get Test
+		{
+			res.writeHead(200,
+			{
+				'Access-Control-Request-Method': 'GET, POST',
+				'Access-Control-Allow-Origin':'*',
+				'Cache-Control': 'no-cache'
+			});
+			res.write('Hello World');
+			res.end();
+			
+			log('[receiver] get');
 		}
 		else
 		{
@@ -75,11 +94,17 @@ module.exports = function(app)
 				res.end();
 			});
 		}
-	});
-
-	receiver.listen(910, null, null, function()
+	}
+	
+	var receiver = { http:http.createServer(server), https:https.createServer({ pfx: fs.readFileSync('./ssl/ssl.pfx') }, server) };
+		
+	receiver.http.listen(app.config.port.http, null, null, function()
 	{
-		log('[receiver] started');
+		log('[receiver] http receiver started');
+		receiver.https.listen(app.config.port.https, null, null, function()
+		{
+			log('[receiver] https receiver started');
+		});
 	});
 
 	app.on('receive-file', function(data)

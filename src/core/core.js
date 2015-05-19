@@ -69,7 +69,8 @@ core.checkLogin = function()
 		{
 			if(!result)
 			{
-				app.gui.setLogined('尝试自动登录, 但登录失败');
+				app.gui.setLogined('登录失败, 可能是账户或密码错误');
+				app.gui.execute('showLogin', {'id':app.config.user.id, 'password':app.config.user.password}, {'checked':app.config.autoLogin});
 				
 				wins.checkLogin.close();
 			}
@@ -107,6 +108,7 @@ core.logout = function()
 	wins.logout.webContents.once('dom-ready', function()
 	{
 		app.gui.setLogined('你已经成功登出');
+		app.gui.execute('showLogin', {'id':app.config.user.id, 'password':app.config.user.password}, {'checked':app.config.autoLogin});
 	});
 	
 	wins.logout.once('closed', function()

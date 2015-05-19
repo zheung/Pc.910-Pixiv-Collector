@@ -50,4 +50,9 @@
 	div.appendChild(a);
 	
 	document.body.appendChild(div);
+	
+	var actionLogout = $tqs('#action-logout');
+	
+	if(actionLogout)
+		actionLogout.parentNode.removeChild(actionLogout);
 })();

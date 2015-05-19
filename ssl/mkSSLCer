@@ -1,0 +1,8 @@
+#!/bin/bash
+openssl genrsa -des3 -passout pass:123456 -out ./ssl.key 1024
+openssl rsa -in ssl.key -passin pass:123456 -out xxx.key
+rm ssl.key
+mv xxx.key ssl.key
+openssl req -new -key ssl.key -out ssl.csr -subj /C=CN/ST=Pc910/L=Pc910/O=Pc910/OU=Pc910/CN=127.0.0.1/emailAddress=Pc910
+openssl x509 -req -days 365 -in ssl.csr -signkey ssl.key -out ssl.crt
+openssl pkcs12 -export -passout pass: -inkey ssl.key -in ssl.crt -out ssl.pfx

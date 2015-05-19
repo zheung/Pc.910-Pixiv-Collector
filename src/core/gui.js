@@ -15,7 +15,8 @@ exports.init = function(app, callback)
 
 	win.once('closed', function()
 	{
-		app.receiver.close();
+		app.receiver.http.close();
+		app.receiver.https.close();
 		app.quit();
 	});
 	
